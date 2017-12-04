@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import jdk.internal.org.xml.sax.InputSource;
-
 public class Day2Part1 {
 
 	static ArrayList<ArrayList<Integer>> inputs = new ArrayList<ArrayList<Integer>>();
