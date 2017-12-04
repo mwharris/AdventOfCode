@@ -7,20 +7,17 @@ public class Day3Part1 {
 		int layer = 0;
 		int cornerNum = 1;
 		
-		//Determine what layer number our input value is on
+		//Determine what layer number our input value is on as well as next corner number
 		while (cornerNum < input) {
 			layer++;
 			cornerNum += (8 * layer);
 		}
 		
+		//Calculate the midpoint value of the face our input is on
 		int faceSize = (layer * 8) / 4;
-		int lastCornerNum = cornerNum - faceSize;
 		int midpoint = cornerNum - (faceSize / 2);
 		
-		System.out.println("Corner Num is: " + cornerNum);
-		System.out.println("Previous corner Num is: " + lastCornerNum);
-		System.out.println("Midpoint is: " + midpoint);
-		
+		//Distance to center is simply the layer number + the difference between midpoint number and the input number
 		int answer = 0;
 		if (midpoint == input) {
 			answer = layer;
