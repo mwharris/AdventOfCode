@@ -3,63 +3,89 @@ package twentyseventeen;
 public class Day3Part2 {
 	
 	static int[][] nums = new int[100][100];
+	static int x = 49;
+	static int y = 49;
+	static int dirX = 1;
+	static int dirY = 0;
 	
 	public static void main(String[] args) {
 		int input = 312051;
-		int x = 49;
-		int y = 49;
-		int dirX = 1;
-		int dirY = 0;
 		int i = 0;
-		int dirChangeIndex = 1;
 		int currVal = 0;
 		
 		while (currVal < input) {
+			//The first two elements are defaulted to 1
 			if (currVal == 0 || currVal == 1) {
 				currVal++;
 				nums[x][y] = 1;
 			}
+			//For all other elements, compute the value by adding neighbors
 			else {
-				//Compute the surrounding elements
 				currVal = addNeighbors(x, y);
 				nums[x][y] = currVal;
-				//Navigate to the next spot in the spiral
-				move(x, y, dirX, dirY, i, dirChangeIndex);
-				resetDirectionChangeIndex();
 			}
+			//Navigate to the next spot in the spiral
+			move();
+			//Turn our direction if required
+			turn(i);
 			i++;
 		}
 		
 		System.out.println(currVal);
 	}
 
-	private static void resetDirectionChangeIndex() {
-		
-	}
-
-	private static void move(int x, int y, int dirX, int dirY, int i, int dirChangeIndex) {
-		int prevDirX = dirX;
-		int prevDirY = dirY;
-		if (i == dirChangeIndex) {
-			//Rotate X left
-			if (dirX > 0 || dirX < 0) {
-				dirX = 0;
+	private static void turn(int i) {
+		//Headed to the right
+		if (dirX == 1) {
+			//We want to face upwards
+			if (nums[x][y+1] == 0) {
+				turnLeft();
 			}
-			else if (dirX == 0) { 
-				dirX = -prevDirY;
+		}
+		//Headed upwards
+		if (dirY == 1) {
+			//We want to face to the left
+			if (nums[x-1][y] == 0) {
+				turnLeft();
 			}
-			//Rotate Y left
-			if (dirY > 0 || dirY < 0) {
-				dirY = 0;
+		}
+		//Headed to the left
+		if (dirX == -1) {
+			//We want to face downwards
+			if (nums[x][y-1] == 0) {
+				turnLeft();
 			}
-			else if (dirY == 0) {
-				dirY = -prevDirX;
+		}
+		//Headed to downwards
+		if (dirY == -1) {
+			//We want to face to the right
+			if (nums[x+1][y] == 0) {
+				turnLeft();
 			}
 		}
 	}
 
+	private static void turnLeft() {
+		if (dirY != 0) {
+			dirX = -dirY;
+			dirY = 0;
+		}
+		else {
+			dirY = dirX;
+			dirX = 0;
+		}
+	}
+
+	private static void move() {
+		x += dirX;
+		y += dirY;
+	}
+
 	private static int addNeighbors(int x, int y) {
-		return nums[x-1][y] + nums[x-1][y-1] + nums[x][y-1] + nums[x+1][y-1] + nums[x+1][y] + nums[x+1][y+1] + nums[x][y+1] + nums[x-1][y+1];
+		return nums[x-1][y] + nums[x-1][y-1] 
+				+ nums[x][y-1] + nums[x+1][y-1] 
+				+ nums[x+1][y] + nums[x+1][y+1] 
+				+ nums[x][y+1] + nums[x-1][y+1];
 	}
 	
 }
