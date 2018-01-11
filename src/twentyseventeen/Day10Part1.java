@@ -70,7 +70,7 @@ public class Day10Part1 {
 
 	private static int wrapAround(int index, int wrapIndex) {
 		if (index >= wrapIndex) {
-			index -= wrapIndex;
+			index = index % wrapIndex;
 		}
 		return index;
 	}
