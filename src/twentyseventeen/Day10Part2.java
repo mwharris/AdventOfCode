@@ -7,19 +7,15 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Day10Part2 {
-
-	public static List<Integer> standardLengthSuffix;
 	
 	public static void main(String[] args) {
-		//Fill out the standard length suffix values
-		standardLengthSuffix = new ArrayList<Integer>();
-		standardLengthSuffix.add(17);
-		standardLengthSuffix.add(31);
-		standardLengthSuffix.add(73);
-		standardLengthSuffix.add(47);
-		standardLengthSuffix.add(23);
-		//Read list of lengths from file
-		List<Integer> lengths = readLengthsFromFile("resources/day10Part2input.txt");
+		String knotHash = doKnotHash("resources/day10Part2input.txt", true);
+		System.out.println("Knot Hash: " + knotHash);
+	}
+
+	public static String doKnotHash(String input, boolean fromFile) {
+		//Get our lengths either from a file OR input string
+		List<Integer> lengths = readLengths(input, fromFile);
 		//Create our list and fill with values 0 - 255
 		int[] list = new int[256];
 		for (int i = 0; i < list.length; i++) {
@@ -30,8 +26,7 @@ public class Day10Part2 {
 		//Generate the dense hash
 		int[] denseHash = generateDenseHash(sparseHash);
 		//Generate the knot hash string based on dense and sparse hashes
-		String knotHash = generateKnotHash(denseHash);
-		System.out.println("Knot Hash: " + knotHash);
+		return generateKnotHash(denseHash);
 	}
 
 	private static String generateKnotHash(int[] denseHash) {
@@ -99,12 +94,27 @@ public class Day10Part2 {
 		return list;
 	}
 	
-	private static List<Integer> readLengthsFromFile(String filename) {
+	private static List<Integer> readLengths(String input, boolean fromFile) {
 		List<Integer> lengths = new ArrayList<Integer>();
 		
+		//Fill out the standard length suffix values
+		List<Integer> standardLengthSuffix = new ArrayList<Integer>();
+		standardLengthSuffix.add(17);
+		standardLengthSuffix.add(31);
+		standardLengthSuffix.add(73);
+		standardLengthSuffix.add(47);
+		standardLengthSuffix.add(23);
+		
 		try {
-			//Read in the only line of input as a string
-			Scanner fileScan = new Scanner(new File(filename));
+			//Read in the input from file OR input string
+			Scanner fileScan;
+			if (fromFile) {
+				fileScan = new Scanner(new File(input));
+			}
+			else {
+				fileScan = new Scanner(input);
+			}
+			//There should be only 1 line in the file
 			String line = fileScan.nextLine();
 			fileScan.close();
 			//Read each character of the input
